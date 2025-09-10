@@ -1,0 +1,91 @@
+// -------------------------
+// إعداد بيانات الدخول (Admin)
+const users = [
+    {email: "wtarek325@gmail.com", password: "Wa@123456", role: "admin"}
+];
+
+// -------------------------
+// تسجيل الدخول
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const msg = document.getElementById("login-msg");
+
+    const user = users.find(u => u.email === email && u.password === password);
+    if(user) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        msg.textContent = "";
+        loadEmployees();
+    } else {
+        msg.textContent = "خطأ في البريد أو كلمة المرور";
+    }
+}
+
+// تسجيل خروج
+function logout() {
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("login").style.display = "block";
+}
+
+// -------------------------
+// Google Sheets API
+// هذا الرابط صالح للقراءة من شيتك
+const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1bpAP3pTv1xI3yciKxtPUxGIBFy6D9kHOghuYV-thM7c/pubhtml';
+
+// تحميل البيانات من Google Sheets
+let employeesData = [];
+
+function loadEmployees() {
+    Tabletop.init({
+        key: publicSpreadsheetUrl,
+        simpleSheet: true,
+        callback: function(data) {
+            employeesData = data;
+            showEmployees();
+        }
+    });
+}
+
+// -------------------------
+// عرض الموظفين
+function showEmployees() {
+    document.getElementById("add-employee").style.display = "none";
+    document.getElementById("employees-list").style.display = "block";
+
+    const tbody = document.querySelector("#employees-table tbody");
+    tbody.innerHTML = "";
+    employeesData.forEach(emp => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${emp.name}</td>
+            <td>${emp.id}</td>
+            <td>${emp.company}</td>
+            <td>${emp.shift}</td>
+            <td>${emp.attendance || 0}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// -------------------------
+// إضافة موظف
+function showAddEmployee() {
+    document.getElementById("employees-list").style.display = "none";
+    document.getElementById("add-employee").style.display = "block";
+}
+
+function addEmployee() {
+    const name = document.getElementById("emp-name").value;
+    const id = document.getElementById("emp-id").value;
+    const company = document.getElementById("emp-company").value;
+    const shift = document.getElementById("emp-shift").value;
+
+    employeesData.push({name, id, company, shift, attendance:0});
+    showEmployees();
+
+    document.getElementById("emp-name").value = "";
+    document.getElementById("emp-id").value = "";
+    document.getElementById("emp-company").value = "";
+    document.getElementById("emp-shift").value = "";
+}

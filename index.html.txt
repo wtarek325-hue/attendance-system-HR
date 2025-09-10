@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام حضور الموظفين</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>نظام حضور الموظفين</h1>
+        
+        <!-- تسجيل دخول Admin -->
+        <div id="login">
+            <h2>تسجيل الدخول</h2>
+            <input type="email" id="email" placeholder="البريد الإلكتروني">
+            <input type="password" id="password" placeholder="كلمة المرور">
+            <button onclick="login()">دخول</button>
+            <p id="login-msg"></p>
+        </div>
+        
+        <!-- لوحة التحكم -->
+        <div id="dashboard" style="display:none;">
+            <h2>لوحة التحكم</h2>
+            <button onclick="showEmployees()">عرض الموظفين</button>
+            <button onclick="showAddEmployee()">إضافة موظف</button>
+            <button onclick="logout()">تسجيل خروج</button>
+            
+            <!-- إضافة موظف -->
+            <div id="add-employee" style="display:none;">
+                <h3>إضافة موظف جديد</h3>
+                <input type="text" id="emp-name" placeholder="اسم الموظف">
+                <input type="text" id="emp-id" placeholder="الرقم القومي">
+                <input type="text" id="emp-company" placeholder="الشركة">
+                <input type="text" id="emp-shift" placeholder="الشفت">
+                <button onclick="addEmployee()">إضافة</button>
+            </div>
+            
+            <!-- قائمة الموظفين -->
+            <div id="employees-list" style="display:none;">
+                <h3>الموظفين</h3>
+                <table id="employees-table">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>الرقم القومي</th>
+                            <th>الشركة</th>
+                            <th>الشفت</th>
+                            <th>عدد أيام الحضور</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.0/src/tabletop.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
